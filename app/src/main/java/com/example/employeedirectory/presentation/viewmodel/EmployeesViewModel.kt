@@ -11,10 +11,12 @@ import com.example.employeedirectory.presentation.ui.composable.Destination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -31,18 +33,33 @@ class EmployeesViewModel @Inject constructor(
 
     private val refreshTrigger = MutableSharedFlow<Unit>()
 
+    private val queryFlow = MutableStateFlow("")
+
+    private val filteredEmployees = combine(
+        useCase.get(apiSource).getEmployees(),
+        queryFlow
+    ) { employees, query ->
+        employees.filter { employee ->
+            employee.fullName.orEmpty().contains(query, ignoreCase = true)
+        }
+    }
+
+    var query: String = ""
+        set(value) {
+            field = value
+            queryFlow.value = value
+        }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val employees: StateFlow<Result<List<Employee>>> =
         refreshTrigger
             .onStart { emit(Unit) }
-            .flatMapLatest {
-                useCase.get(apiSource).getEmployees()
-            }
-            .map {
-                if (!validate(it)) {
+            .flatMapLatest { filteredEmployees }
+            .map { employees ->
+                if (validate(employees).not()) {
                     throw IllegalArgumentException("Invalid employee data")
                 }
-                Result.Success(it) as Result<List<Employee>>
+                Result.Success(employees) as Result<List<Employee>>
             }
             .catch { emit(Result.Error(it.localizedMessage.orEmpty())) }
             .stateIn(

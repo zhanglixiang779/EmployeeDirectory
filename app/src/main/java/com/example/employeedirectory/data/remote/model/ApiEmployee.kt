@@ -1,7 +1,5 @@
 package com.example.employeedirectory.data.remote.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.example.employeedirectory.domain.model.Employee
 import com.google.gson.annotations.SerializedName
 

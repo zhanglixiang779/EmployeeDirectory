@@ -5,4 +5,5 @@
     <string name="name">Name:&#160;</string>
     <string name="team">Team:&#160;</string>
     <string name="image_content_description">Employee Image</string>
+    <string name="search_name">Search Name:</string>
 </resources>
