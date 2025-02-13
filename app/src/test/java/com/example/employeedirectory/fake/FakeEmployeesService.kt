@@ -1,7 +1,7 @@
 package com.example.employeedirectory.fake
 
-import com.example.employeedirectory.data.model.ApiEmployees
-import com.example.employeedirectory.data.service.EmployeesService
+import com.example.employeedirectory.data.remote.model.ApiEmployees
+import com.example.employeedirectory.data.remote.service.EmployeesService
 
 class FakeEmployeesService : EmployeesService {
     private var employeesResponse: ApiEmployees? = null

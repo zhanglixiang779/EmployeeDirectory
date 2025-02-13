@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.parcelize)
     kotlin("plugin.serialization") version "2.1.0"
@@ -84,6 +85,11 @@ dependencies {
     // Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

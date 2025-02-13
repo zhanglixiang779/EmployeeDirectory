@@ -1,8 +1,8 @@
 package com.example.employeedirectory
 
-import com.example.employeedirectory.data.datasource.RemoteDataSource
-import com.example.employeedirectory.data.model.ApiEmployee
-import com.example.employeedirectory.data.model.ApiEmployees
+import com.example.employeedirectory.data.remote.datasource.RemoteDataSource
+import com.example.employeedirectory.data.remote.model.ApiEmployee
+import com.example.employeedirectory.data.remote.model.ApiEmployees
 import com.example.employeedirectory.fake.FakeEmployeesService
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.fail
